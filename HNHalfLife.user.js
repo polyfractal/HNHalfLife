@@ -198,30 +198,36 @@ if (window.location.pathname === "/item") {
 //update main index pages with "New Comments" text
 else if (window.location.pathname.match(/\/(?:news|newest|ask|best|active|noobstories|saved|x)/)) {
     $("td.subtext").each(function() {
-        var id = $(this).find("a[href^=item]").attr("href").match(/item\?id=([0-9]+)/)[1];
 
-        //check to see if this story is in our storage
-        var story = $.jStorage.get(id.toString());
+        //A little kludgy, but this checks for the occasional job posting, which
+        // don't have normal subtext lines (no points, comments, etc)
+        if ($(this).text().match("point")){
 
-        if(story){
-            var numComments = $(this).find("a[href^=item]").text().match(/([0-9]+) comments?/)[1];
-            //var timeAgo = $(this).text().match(/([0-9]{0,3} (?:minutes?|hours?|days?|years?) ago)/);
-            //var timeStamp = timeAgoToDate(timeAgo[1]);
+            var id = $(this).find("a[href^=item]").attr("href").match(/item\?id=([0-9]+)/)[1];
+            
+            //check to see if this story is in our storage
+            var story = $.jStorage.get(id.toString());
 
-            var commentDiff = numComments - story.numComments;
+            if(story){
+                var numComments = $(this).find("a[href^=item]").text().match(/([0-9]+) comments?/)[1];
+                //var timeAgo = $(this).text().match(/([0-9]{0,3} (?:minutes?|hours?|days?|years?) ago)/);
+                //var timeStamp = timeAgoToDate(timeAgo[1]);
 
-            //update the subtext at top of story
-            //Note: Is there a better way to add a vertical bar without styling, other than performing two appends?
-            if (commentDiff === 1 ){
-                //$(this).append(" | ");
-                $("<span> (" + commentDiff.toString() + " New Comment)</span>").css("color","#FF6C0A").appendTo(this);
+                var commentDiff = numComments - story.numComments;
+
+                //update the subtext at top of story
+                //Note: Is there a better way to add a vertical bar without styling, other than performing two appends?
+                if (commentDiff === 1 ){
+                    //$(this).append(" | ");
+                    $("<span> (" + commentDiff.toString() + " New Comment)</span>").css("color","#FF6C0A").appendTo(this);
+                }
+                else if (commentDiff > 1 ){
+                    //$(this).append(" | ");
+                    $("<span> (" + commentDiff.toString() + " New Comments)</span>").css("color","#FF6C0A").appendTo(this);
+                }
+
+
             }
-            else if (commentDiff > 1 ){
-                //$(this).append(" | ");
-                $("<span> (" + commentDiff.toString() + " New Comments)</span>").css("color","#FF6C0A").appendTo(this);
-            }
-
-
         }
     });
 }
