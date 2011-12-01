@@ -194,7 +194,7 @@ if (window.location.pathname == "/item") {
 
 }
 //update main index pages with "New Comments" text
-else if (window.location.pathname.match(/\/(?:news|newest|ask|best|active|noobstories|saved)/)) {
+else if (window.location.pathname.match(/\/(?:news|newest|ask|best|active|noobstories|saved|x)/)) {
     $("td.subtext").each(function() {
         var id = $(this).find("a[href^=item]").attr("href").match(/item\?id=([0-9]+)/)[1];
 
